@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Твій тип прив'язаності</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a1729;
+    --ink-2:#0f2138;
+    --ink-3:#16294a;
+    --rose:#d8a48f;
+    --rose-bright:#ecc4b1;
+    --rose-deep:#b87a64;
+    --line:rgba(216,164,143,.22);
+    --line-strong:rgba(216,164,143,.42);
+    --text:#ece7df;
+    --dim:#9fabbd;
+    --dim-2:#6f7d92;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 700px at 80% -10%, rgba(216,164,143,.10), transparent 60%),
+      radial-gradient(900px 600px at 10% 110%, rgba(60,110,180,.10), transparent 55%),
+      var(--ink);
+    color:var(--text);
+    font-family:'Lora',Georgia,serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:54px 26px 90px}
+  .center{text-align:center}
+
+  /* hero */
+  .kolibri{display:block;margin:0 auto 26px;width:64px;height:auto;opacity:.92}
+  .eyebrow{
+    font-family:'Lora',serif;font-style:italic;color:var(--rose);
+    letter-spacing:.06em;font-size:1rem;margin-bottom:14px;
+  }
+  h1{
+    font-family:'Playfair Display',serif;font-weight:600;
+    font-size:clamp(2.1rem,6vw,3.2rem);line-height:1.12;
+    letter-spacing:.01em;margin-bottom:18px;
+  }
+  h1 .em{color:var(--rose-bright);font-style:italic;font-weight:500}
+  .lede{font-size:1.12rem;color:var(--dim);max-width:560px;margin:0 auto}
+
+  .divider{
+    width:70px;height:1px;background:var(--line-strong);
+    margin:40px auto;position:relative;
+  }
+  .divider::after{
+    content:"";position:absolute;top:-3px;left:50%;transform:translateX(-50%);
+    width:7px;height:7px;border-radius:50%;background:var(--rose);
+    box-shadow:0 0 14px rgba(216,164,143,.7);
+  }
+
+  /* origin section */
+  .origin{
+    background:linear-gradient(180deg,var(--ink-2),rgba(15,33,56,.4));
+    border:1px solid var(--line);border-radius:18px;
+    padding:32px 30px;margin-top:8px;
+  }
+  .origin h2{
+    font-family:'Playfair Display',serif;font-weight:600;font-size:1.5rem;
+    margin-bottom:16px;letter-spacing:.01em;
+  }
+  .origin p{color:var(--dim);margin-bottom:14px}
+  .origin p:last-child{margin-bottom:0}
+  .origin b{color:var(--text);font-weight:600}
+  .axes{
+    display:flex;gap:14px;margin-top:22px;flex-wrap:wrap;
+  }
+  .axis{
+    flex:1 1 220px;border:1px solid var(--line);border-radius:13px;
+    padding:16px 18px;background:rgba(10,23,41,.5);
+  }
+  .axis .t{font-family:'Playfair Display',serif;color:var(--rose-bright);
+    font-size:1.08rem;margin-bottom:4px}
+  .axis .d{font-size:.96rem;color:var(--dim)}
+
+  /* quiz */
+  .quiz-head{margin:54px 0 8px}
+  .quiz-head h2{
+    font-family:'Playfair Display',serif;font-weight:600;
+    font-size:clamp(1.6rem,4.5vw,2.1rem);margin-bottom:12px;
+  }
+  .quiz-head p{color:var(--dim)}
+
+  .progress-rail{
+    height:3px;background:rgba(255,255,255,.06);border-radius:3px;
+    margin:30px 0 36px;overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;width:0;border-radius:3px;
+    background:linear-gradient(90deg,var(--rose-deep),var(--rose-bright));
+    transition:width .45s cubic-bezier(.4,0,.2,1);
+  }
+
+  .q{
+    border-bottom:1px solid var(--line);
+    padding:0 0 26px;margin-bottom:26px;
+    opacity:0;transform:translateY(14px);
+    animation:rise .6s forwards;
+  }
+  .q:last-of-type{border-bottom:none}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .q .num{
+    font-family:'Lora',serif;font-style:italic;color:var(--rose);
+    font-size:.92rem;margin-bottom:7px;
+  }
+  .q .text{font-size:1.16rem;line-height:1.5;margin-bottom:18px;color:var(--text)}
+  .opts{display:flex;flex-direction:column;gap:9px}
+  .opt{
+    text-align:left;cursor:pointer;
+    background:rgba(15,33,56,.55);
+    border:1px solid var(--line);border-radius:11px;
+    padding:13px 17px;color:var(--dim);
+    font-family:'Lora',serif;font-size:1.02rem;
+    transition:all .2s ease;display:flex;align-items:center;gap:13px;
+  }
+  .opt:hover{border-color:var(--line-strong);color:var(--text);
+    background:rgba(22,41,74,.75)}
+  .opt .dot{
+    width:14px;height:14px;border-radius:50%;flex:0 0 auto;
+    border:1.5px solid var(--line-strong);transition:all .2s;
+  }
+  .opt.sel{
+    border-color:var(--rose);color:var(--text);
+    background:rgba(216,164,143,.10);
+  }
+  .opt.sel .dot{background:var(--rose);border-color:var(--rose);
+    box-shadow:0 0 12px rgba(216,164,143,.6)}
+
+  .reveal-btn-wrap{margin-top:40px;text-align:center}
+  .btn{
+    font-family:'Playfair Display',serif;font-size:1.08rem;font-weight:500;
+    letter-spacing:.02em;cursor:pointer;
+    background:linear-gradient(180deg,var(--rose),var(--rose-deep));
+    color:#1a0f0b;border:none;border-radius:50px;
+    padding:15px 42px;transition:all .25s ease;
+    box-shadow:0 8px 30px rgba(216,164,143,.22);
+  }
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 38px rgba(216,164,143,.34)}
+  .btn:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+  .btn.ghost{
+    background:none;border:1px solid var(--line-strong);color:var(--rose-bright);
+    box-shadow:none;
+  }
+  .btn.ghost:hover{background:rgba(216,164,143,.08)}
+  .hint{color:var(--dim-2);font-size:.92rem;margin-top:14px;font-style:italic}
+
+  /* result */
+  #result{display:none}
+  .res-eyebrow{font-family:'Lora',serif;font-style:italic;color:var(--rose);
+    text-align:center;margin-bottom:8px}
+  .res-title{
+    font-family:'Playfair Display',serif;font-weight:600;text-align:center;
+    font-size:clamp(2rem,6vw,2.8rem);margin-bottom:8px;
+  }
+  .res-sub{text-align:center;color:var(--dim);font-style:italic;margin-bottom:30px}
+
+  .map{
+    background:rgba(10,23,41,.5);border:1px solid var(--line);
+    border-radius:16px;padding:26px 22px 18px;margin-bottom:30px;
+  }
+  .map svg{display:block;width:100%;height:auto;max-width:330px;margin:0 auto}
+
+  .res-card{
+    background:linear-gradient(180deg,var(--ink-2),rgba(15,33,56,.35));
+    border:1px solid var(--line);border-radius:16px;
+    padding:28px 28px;margin-bottom:20px;
+  }
+  .res-card h3{
+    font-family:'Playfair Display',serif;font-weight:600;font-size:1.32rem;
+    color:var(--rose-bright);margin-bottom:14px;display:flex;align-items:center;gap:10px;
+  }
+  .res-card h3 .ic{font-size:1.1rem;opacity:.85}
+  .res-card p{color:var(--dim);margin-bottom:0}
+  .res-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+  .res-list li{position:relative;padding-left:26px;color:var(--dim)}
+  .res-list li::before{
+    content:"";position:absolute;left:4px;top:.62em;
+    width:7px;height:7px;border-radius:50%;background:var(--rose);
+    box-shadow:0 0 8px rgba(216,164,143,.5);
+  }
+  .res-list li b{color:var(--text);font-weight:600}
+  .closing{
+    text-align:center;font-style:italic;color:var(--dim);
+    max-width:540px;margin:34px auto 0;font-size:1.06rem;
+  }
+  .footer-note{
+    text-align:center;color:var(--dim-2);font-size:.9rem;
+    margin-top:54px;padding-top:24px;border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== HERO ===== -->
+  <section id="intro">
+    <div class="center">
+      <svg class="kolibri" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 22 C46 30 44 40 46 50 C40 46 30 44 22 48 C30 50 38 54 44 60 C40 70 40 80 44 88 C48 80 50 70 52 62 C60 70 72 74 84 72 C74 68 64 62 56 54 C62 46 66 36 64 26 C60 32 54 36 50 42 C50 36 50 28 50 22 Z" fill="#d8a48f" opacity="0.9"/>
+        <circle cx="50" cy="50" r="2.4" fill="#ecc4b1"/>
+        <path d="M64 26 C70 22 78 22 84 26" stroke="#d8a48f" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/>
+      </svg>
+      <div class="eyebrow">самодіагностика</div>
+      <h1>Як ти <span class="em">прив'язуєшся</span><br>до близьких</h1>
+      <p class="lede">Те, як ти любиш, тривожишся, довіряєш або віддаляєшся від людей — твоя нервова система засвоїла ці відповіді раніше, ніж ти навчилась говорити. Можна нарешті побачити, що вона вирішила.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- ===== ORIGIN ===== -->
+    <div class="origin">
+      <h2>Звідки це взялося</h2>
+      <p>Теорію прив'язаності описав британський психолог <b>Джон Боулбі</b> в середині XX століття. Він побачив, що те, як немовля переживає близькість і розлуку з мамою, складається в базовий внутрішній шаблон — наскільки безпечно людині поруч з іншими.</p>
+      <p>Його колега <b>Мері Ейнсворт</b> через експеримент «Незнайома ситуація» описала, як по-різному діти реагують на повернення мами, і виділила типи прив'язаності. Пізніше дослідники перенесли це на дорослі стосунки: те, чи можна було розраховувати на тепло і захист ще до того, як ти навчилася говорити, стає відчуттям, з яким ти будуєш усі близькі зв'язки далі.</p>
+      <p>Усі типи стоять на двох простих вимірах. Подивись на них перед тестом:</p>
+      <div class="axes">
+        <div class="axis">
+          <div class="t">Тривога</div>
+          <div class="d">Наскільки сильно я боюся, що мене покинуть, і ловлю кожен знак холоду в людині.</div>
+        </div>
+        <div class="axis">
+          <div class="t">Уникання</div>
+          <div class="d">Наскільки я відсуваюсь від близькості, тримаю дистанцію і покладаюся тільки на себе.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUIZ ===== -->
+  <section class="quiz-head" id="quiz">
+    <h2>14 питань про те, як ти насправді</h2>
+    <p>Відповідай за відчуттям, а не за тим, «як правильно». Думай про близькі стосунки — з партнером, рідними, дуже важливими людьми.</p>
+    <div class="progress-rail"><div class="progress-fill" id="progress"></div></div>
+    <div id="questions"></div>
+    <div class="reveal-btn-wrap">
+      <button class="btn" id="revealBtn" disabled>Показати мій тип</button>
+      <div class="hint" id="hint">Дай відповідь на всі питання</div>
+    </div>
+  </section>
+
+  <!-- ===== RESULT ===== -->
+  <section id="result">
+    <div class="res-eyebrow">твій тип</div>
+    <h1 class="res-title" id="resTitle"></h1>
+    <p class="res-sub" id="resSub"></p>
+
+    <div class="map">
+      <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" id="mapSvg">
+        <!-- quadrant fills -->
+        <rect x="40" y="40" width="110" height="110" fill="rgba(216,164,143,0.05)"/>
+        <rect x="150" y="40" width="110" height="110" fill="rgba(216,164,143,0.05)"/>
+        <rect x="40" y="150" width="110" height="110" fill="rgba(216,164,143,0.05)"/>
+        <rect x="150" y="150" width="110" height="110" fill="rgba(216,164,143,0.05)"/>
+        <!-- axes -->
+        <line x1="40" y1="150" x2="260" y2="150" stroke="rgba(216,164,143,0.3)" stroke-width="1"/>
+        <line x1="150" y1="40" x2="150" y2="260" stroke="rgba(216,164,143,0.3)" stroke-width="1"/>
+        <!-- labels -->
+        <text x="150" y="30" text-anchor="middle" fill="#9fabbd" font-family="Lora,serif" font-size="11" font-style="italic">більше тривоги ↑</text>
+        <text x="150" y="280" text-anchor="middle" fill="#9fabbd" font-family="Lora,serif" font-size="11" font-style="italic">менше тривоги ↓</text>
+        <text x="95" y="155" text-anchor="middle" fill="#9fabbd" font-family="Lora,serif" font-size="10">мало уникання</text>
+        <text x="205" y="155" text-anchor="middle" fill="#9fabbd" font-family="Lora,serif" font-size="10">багато уникання</text>
+        <!-- quadrant names -->
+        <text x="95" y="95" text-anchor="middle" fill="#6f7d92" font-family="Playfair Display,serif" font-size="12">тривожний</text>
+        <text x="205" y="95" text-anchor="middle" fill="#6f7d92" font-family="Playfair Display,serif" font-size="12">хаотичний</text>
+        <text x="95" y="210" text-anchor="middle" fill="#6f7d92" font-family="Playfair Display,serif" font-size="12">безпечний</text>
+        <text x="205" y="210" text-anchor="middle" fill="#6f7d92" font-family="Playfair Display,serif" font-size="12">уникаючий</text>
+        <!-- point -->
+        <circle id="mapPoint" cx="150" cy="150" r="0" fill="#ecc4b1">
+          <animate id="pointAnim" attributeName="r" from="0" to="8" dur="0.5s" fill="freeze" begin="indefinite"/>
+        </circle>
+        <circle id="mapHalo" cx="150" cy="150" r="8" fill="none" stroke="#d8a48f" stroke-width="1" opacity="0">
+          <animate id="haloAnim" attributeName="r" from="8" to="20" dur="1.6s" repeatCount="indefinite" begin="indefinite"/>
+          <animate id="haloFade" attributeName="opacity" from="0.6" to="0" dur="1.6s" repeatCount="indefinite" begin="indefinite"/>
+        </circle>
+      </svg>
+    </div>
+
+    <div class="res-card">
+      <h3><span class="ic">◈</span> Як це проявляється</h3>
+      <p id="resBehaviour"></p>
+    </div>
+    <div class="res-card">
+      <h3><span class="ic">◈</span> Що під цим лежить</h3>
+      <p id="resRoot"></p>
+    </div>
+    <div class="res-card">
+      <h3><span class="ic">✦</span> Що з цим робити</h3>
+      <ul class="res-list" id="resDo"></ul>
+    </div>
+
+    <p class="closing" id="resClosing"></p>
+
+    <div class="reveal-btn-wrap">
+      <button class="btn ghost" id="restartBtn">Пройти ще раз</button>
+    </div>
+  </section>
+
+  <div class="footer-note">Те, що склалось раніше, відкривається через усвідомлення і змінюється через практику.</div>
+
+</div>
+
+<script>
+const questions = [
+  {axis:'anx', t:'Коли близька людина довго не відповідає, я починаю прокручувати в голові, що зробила не так.'},
+  {axis:'avo', t:'Коли стає надто близько й тепло, мені хочеться відсунутись і побути окремо.'},
+  {axis:'anx', t:'Мені треба регулярно відчувати, що мене люблять, інакше я починаю сумніватися.'},
+  {axis:'avo', t:'Свої переживання я тримаю при собі — навіщо їх комусь вивалювати.'},
+  {axis:'anx', t:'Я швидко й сильно прив\'язуюсь, а потім боюся це втратити.'},
+  {axis:'avo', t:'Я звикла розраховувати тільки на себе, просити про допомогу — це майже не про мене.'},
+  {axis:'anx', t:'Якщо в стосунках з\'являється дистанція, я не можу заспокоїтись, поки все не з\'ясую до кінця.'},
+  {axis:'avo', t:'Коли хтось поруч сильно емоціонує, я замикаюсь або йду в справи.'},
+  {axis:'anx', t:'Я часто переживаю, що людина поруч любить мене менше, ніж я її.'},
+  {axis:'avo', t:'Мені важливо виглядати спокійною і зібраною, навіть коли всередині буря.'},
+  {axis:'anx', t:'Коли мене ніби не помічають, я можу влаштувати сцену або демонстративно замкнутися.'},
+  {axis:'avo', t:'Близькість і зобов\'язання трохи лякають — я дуже ціную свою свободу.'},
+  {axis:'anx', t:'Мені складно довго бути на самоті, я шукаю, з ким побути поруч.'},
+  {axis:'avo', t:'Коли в стосунках конфлікт, мені простіше закритися, ніж розбиратися.'},
+];
+
+const scale = [
+  {label:'Зовсім не про мене', v:0},
+  {label:'Іноді буває', v:1},
+  {label:'Часто так', v:2},
+  {label:'Це прямо я', v:3},
+];
+
+const answers = new Array(questions.length).fill(null);
+
+const qBox = document.getElementById('questions');
+questions.forEach((q,i)=>{
+  const div = document.createElement('div');
+  div.className='q';
+  div.style.animationDelay = (0.04*i)+'s';
+  div.innerHTML = `
+    <div class="num">питання ${i+1}</div>
+    <div class="text">${q.t}</div>
+    <div class="opts" data-q="${i}">
+      ${scale.map(s=>`<button class="opt" data-v="${s.v}"><span class="dot"></span>${s.label}</button>`).join('')}
+    </div>`;
+  qBox.appendChild(div);
+});
+
+let answered = 0;
+qBox.querySelectorAll('.opts').forEach(group=>{
+  group.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const qi = +group.dataset.q;
+      if(answers[qi]===null) answered++;
+      answers[qi] = +btn.dataset.v;
+      group.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel');
+      const pct = Math.round(answered/questions.length*100);
+      document.getElementById('progress').style.width = pct+'%';
+      if(answered===questions.length){
+        document.getElementById('revealBtn').disabled = false;
+        document.getElementById('hint').textContent = 'Готово — можна дивитися';
+      }
+    });
+  });
+});
+
+const types = {
+  secure:{
+    title:'Безпечний',
+    sub:'твоя база — спокій і зв\'язок',
+    behaviour:'Поруч з тобою спокійно. Ти стабільна під стресом, швидко формуєш дружбу й витримуєш її довго, добре регулюєш свої емоції. Ти відчуваєш, коли іншому потрібна підтримка, коли турбота, а коли «пеньок під зад». Легко змінюєш думку, тобі щиро цікаві інші люди, ти легко знайомишся. Навіть у сильному стресі десь усередині ти знаєш: це тимчасово, світ загалом безпечний — і швидко відновлюєшся.',
+    root:'У тебе достатньо рано склалося відчуття, що на близьких можна розраховувати. Це не «ідеальність», а фундамент: коли всередині безпечно, енергія вивільняється не на захист, а на дослідження світу, творення й любов.',
+    doList:[
+      '<b>Спирайся на це як на ресурс.</b> Ти можеш бути тією стабільною фігурою, поруч з якою іншим стає спокійно.',
+      '<b>Помічай свої краплі тривоги й уникання.</b> Вони є в усіх — у тебе просто менше. У стресових точках вони все одно вмикаються, і це нормально.',
+      '<b>Вкладайся в зв\'язки, що живлять.</b> Безпека росте від теплих стосунків, а не від самоти.',
+      '<b>З цієї бази найлегше виходити в прояв і дію</b> — те, чого хочеться більше.',
+    ],
+    closing:'Це твоя опора. З неї варто рухатися далі — у більший прояв, більшу сміливість, більше свого.',
+    pos:{anx:false,avo:false}
+  },
+  anxious:{
+    title:'Тривожний',
+    sub:'амбівалентний — тягнешся й боїшся втратити',
+    behaviour:'Ти швидко й сильно прив\'язуєшся, легко ідеалізуєш людину, стаєш дуже довірливою. Гостро відчуваєш свої емоції й погано переносиш холод і дистанцію. Боїшся розставання, можеш чіплятися, ревнувати. Сильно потребуєш людей — і часто в них розчаровуєшся. Багато говориш, тиснеш емоційністю, щоб привернути увагу. Коли не отримуєш бажаної реакції — можеш діяти суперечливо, ховаючи справжні почуття. Під стресом усе виходить назовні: це видно.',
+    root:'Десь дуже рано закріпилося, що близькість нестабільна, а любов треба утримувати. Звідси глибока потреба в безпеці та зв\'язку й передбачення «мене покинуть» — яке ти мимоволі починаєш доводити собі сама.',
+    doList:[
+      '<b>Назви свою чутливість до втрати.</b> Просто помічай: «зараз увімкнувся мій страх покинутості» — це вже зменшує його владу.',
+      '<b>Подивись на повторювані патерни</b> у минулих стосунках. Найімовірніше, тебе тягне саме до тих, хто менш стабільний.',
+      '<b>Проживай страх до кінця.</b> Не тікай від нього й не туши сценою — дай емоції побути, і ти побачиш: ти вже з цим справлялась, він тебе не вб\'є.',
+      '<b>Постав паузу перед реакцією.</b> Між дистанцією й твоєю «перевіркою» постав хоча б кілька хвилин — там, де раніше була миттєва сцена.',
+      '<b>Вчись давати собі ту присутність,</b> яку вимагаєш від інших. Поступово спирайся на стабільних людей і дозволяй собі їм довіряти.',
+    ],
+    closing:'Твоя сила — у глибині відчуттів. Коли страх перестає керувати, ця ж чутливість стає теплом, яке притягує надійних людей.',
+    pos:{anx:true,avo:false}
+  },
+  avoidant:{
+    title:'Уникаючий',
+    sub:'застигла маска спокою',
+    behaviour:'За будь-якого стресу в стосунках ти емоційно дистанціюєшся. Ти самозалежна, рідко скаржишся й говориш про себе, тримаєш застиглу маску спокою — інколи надто спокійна для ситуації. Емоції відчуваєш, але погано розумієш, що саме всередині. Замість проживання — заморожуєшся й перемикаєшся на справи, логіку, самотність. Не любиш зобов\'язань, тиску близькості, зайвої уваги й похвали. Чужа емоційність — твій головний стрес, від неї тіло кам\'яніє.',
+    root:'Колись стало зрозуміло, що з емоціями краще не потикатися: вони або не приймались, або були небезпечними. Тож ти навчилася вимикати їх — але разом із важкими «вимкнулися» й теплі. Зв\'язок насправді потрібен, просто він лякає.',
+    doList:[
+      '<b>Працюй з емоціями маленькими дозами</b> — рівно стільки, скільки тіло витримує, без різкого занурення.',
+      '<b>Тричі на день зупиняйся й називай,</b> що зараз відчуваєш і у зв\'язку з чим. Постав будильник — спершу це буде складно, потім цікаво.',
+      '<b>Лови тілесні сигнали стресу</b> (стиснута щелепа, важкість, заніміння) — бо голова їх не зчитує, а тіло реагує першим.',
+      '<b>Дозволяй близькість поступово,</b> не закриваючись від першого дискомфорту. Дискомфорт тут — не сигнал тікати, а точка росту.',
+      '<b>Помічай, що логіка й самотність — це втеча</b> від почуття, а не його розв\'язання.',
+    ],
+    closing:'Під маскою спокою живе багато тепла. Завдання — не зламати маску, а навчити себе бути в контакті, лишаючись у безпеці.',
+    pos:{anx:false,avo:true}
+  },
+  disorganized:{
+    title:'Хаотичний',
+    sub:'дезорганізований — тягнешся й відштовхуєш одночасно',
+    behaviour:'Коли не спрацьовує тривога — вмикається уникання, і навпаки. Одна твоя частина хоче зв\'язку, інша вже наперед чекає, що тебе покинуть, — і цим відштовхує. Ти хочеш близькості й одночасно злишся ще до того, як щось сталося. Постійно й безуспішно намагаєшся зрозуміти себе та інших, не вловлюєш, чого хоче людина поруч і що тобі робити. Глибоко всередині — відчуття «я недостойна любові».',
+    root:'Найчастіше за цим стоїть досвід, де той, хто мав давати безпеку, був і джерелом страху. Тому близькість водночас манить і лякає — система не знає, наближатися чи тікати.',
+    doList:[
+      '<b>Найперше — стабільність і безпека.</b> Режим, тіло, передбачуваний простір. Без цього фундаменту інша робота не тримається.',
+      '<b>Лови момент перемикання</b> з «тягнусь» на «відштовхую» — і не вір цьому імпульсу як факту. Це автоматика, а не правда про людину.',
+      '<b>Проживай емоції в безпечних умовах,</b> дуже маленькими кроками й дбайливо до себе.',
+      '<b>Спирайся на стабільну зовнішню фігуру.</b> У програмі це спільне «Я» й ведуча — поки своя внутрішня опора ще будується.',
+      '<b>Будь терплячою.</b> Це найскладніший тип, і йому потрібен час. Швидко тут не означає по-справжньому.',
+    ],
+    closing:'Усередині тебе не хаос, а дві частини, які поки не домовились. Коли з\'являється безпека, вони перестають воювати — і це повертає тобі величезну енергію.',
+    pos:{anx:true,avo:true}
+  },
+};
+
+function classify(){
+  let anxSum=0, anxMax=0, avoSum=0, avoMax=0;
+  questions.forEach((q,i)=>{
+    if(q.axis==='anx'){anxSum+=answers[i];anxMax+=3;}
+    else{avoSum+=answers[i];avoMax+=3;}
+  });
+  const anx = anxSum/anxMax;   // 0..1
+  const avo = avoSum/avoMax;
+  const highAnx = anx >= 0.5;
+  const highAvo = avo >= 0.5;
+  let key;
+  if(highAnx && highAvo) key='disorganized';
+  else if(highAnx && !highAvo) key='anxious';
+  else if(!highAnx && highAvo) key='avoidant';
+  else key='secure';
+  return {key, anx, avo};
+}
+
+document.getElementById('revealBtn').addEventListener('click',()=>{
+  const {key, anx, avo} = classify();
+  const t = types[key];
+  document.getElementById('resTitle').textContent = t.title;
+  document.getElementById('resSub').textContent = t.sub;
+  document.getElementById('resBehaviour').textContent = t.behaviour;
+  document.getElementById('resRoot').textContent = t.root;
+  document.getElementById('resClosing').textContent = t.closing;
+  const ul = document.getElementById('resDo');
+  ul.innerHTML = t.doList.map(x=>`<li>${x}</li>`).join('');
+
+  // place point on map: x = avoidance (40..260), y = anxiety inverted (40..260)
+  const x = 40 + avo*220;
+  const y = 260 - anx*220;
+  const pt = document.getElementById('mapPoint');
+  const halo = document.getElementById('mapHalo');
+  pt.setAttribute('cx',x); pt.setAttribute('cy',y);
+  halo.setAttribute('cx',x); halo.setAttribute('cy',y);
+
+  document.getElementById('intro').style.display='none';
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('result').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  // trigger svg animations
+  ['pointAnim','haloAnim','haloFade'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el && el.beginElement) el.beginElement();
+  });
+});
+
+document.getElementById('restartBtn').addEventListener('click',()=>{
+  answers.fill(null); answered=0;
+  document.getElementById('progress').style.width='0%';
+  qBox.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('revealBtn').disabled=true;
+  document.getElementById('hint').textContent='Дай відповідь на всі питання';
+  document.getElementById('result').style.display='none';
+  document.getElementById('intro').style.display='block';
+  document.getElementById('quiz').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+</script>
+</body>
+</html>
